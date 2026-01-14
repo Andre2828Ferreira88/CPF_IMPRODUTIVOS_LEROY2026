@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Automação de CPF Improdutivos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        :root {
+            --leroy-green: #2e7d32;
+            --bg: #f4f6f8;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", system-ui, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background: var(--card);
+            width: 100%;
+            max-width: 520px;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            color: var(--text);
+        }
+
+        p {
+            margin: 0 0 24px 0;
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 18px;
+        }
+
+        button {
+            width: 100%;
+            background: var(--leroy-green);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: .9;
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .error {
+            background: #fdecea;
+            color: #b71c1c;
+        }
+
+        .download {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .download a {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #1b5e20;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 24px;
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>CPF Improdutivos</h1>
+    <p>Automação interna • Upload • Processamento • Download</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% if "concluído" in messages[0]|lower %}
+                <div class="alert success">{{ messages[0] }}</div>
+            {% else %}
+                <div class="alert error">{{ messages[0] }}</div>
+            {% endif %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="post" enctype="multipart/form-data">
+        <label>CPF_BASE.xlsx</label>
+        <input type="file" name="cpf" required>
+
+        <label>MENSAL.xlsx</label>
+        <input type="file" name="mensal" required>
+
+        <button type="submit">Executar automação</button>
+    </form>
+
+    {% if download_url %}
+        <div class="download">
+            <a href="{{ download_url }}">⬇️ Baixar arquivo final</a>
+        </div>
+    {% endif %}
+
+    <footer>
+        © 2025 • Sistema interno • Desenvolvido por André Ferreira Monteiro
+    </footer>
+</div>
+
+</body>
+</html>
